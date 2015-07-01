@@ -1,0 +1,15 @@
+if TARGET_TELEGRAUQ7
+
+config SYS_BOARD
+        default "telegrauq7"
+
+config SYS_VENDOR
+        default "telegra"
+
+config SYS_SOC
+	default "mx6"
+
+config SYS_CONFIG_NAME
+        default "telegrauq7"
+
+endif

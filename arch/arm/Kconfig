@@ -886,7 +886,10 @@ source "board/st/stv0991/Kconfig"
 source "board/sunxi/Kconfig"
 source "board/syteco/zmx25/Kconfig"
 source "board/tbs/tbs2910/Kconfig"
+<<<<<<< HEAD
 source "board/telegra/Kconfig"
+=======
+>>>>>>> 1eb1cbb1cdf80119b57e7a5c991a7c6625e61074
 source "board/ti/am335x/Kconfig"
 source "board/ti/am43xx/Kconfig"
 source "board/birdland/bav335x/Kconfig"

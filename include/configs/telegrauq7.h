@@ -258,6 +258,7 @@
 
 /* Physical Memory Map */
 #define CONFIG_NR_DRAM_BANKS		1
+
 #define MMDC0_ARB_BASE_ADDR             0x10000000
 #define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
 

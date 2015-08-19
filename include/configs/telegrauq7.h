@@ -51,7 +51,7 @@
 #define CONFIG_CMD_BMODE
 #define CONFIG_CMD_SETEXPR
 
-#define CONFIG_BOOTDELAY		5
+#define CONFIG_BOOTDELAY		2
 
 #define CONFIG_SYS_MEMTEST_START	0x10000000
 #define CONFIG_SYS_MEMTEST_END		(CONFIG_SYS_MEMTEST_START + 256 * SZ_1M)
@@ -63,6 +63,43 @@
 #define CONFIG_SYS_I2C
 #define CONFIG_SYS_I2C_MXC
 #define CONFIG_SYS_I2C_SPEED		100000
+
+/* NAND */
+#define CONFIG_SYS_USE_NAND
+
+
+#ifdef CONFIG_SYS_USE_NAND
+#define CONFIG_CMD_NAND
+#define CONFIG_CMD_NAND_TRIMFFS
+
+/* NAND stuff */
+#define CONFIG_NAND_MXS
+#define CONFIG_SYS_MAX_NAND_DEVICE	1
+#define CONFIG_SYS_NAND_BASE		0x40000000
+#define CONFIG_SYS_NAND_5_ADDR_CYCLE
+#define CONFIG_SYS_NAND_ONFI_DETECTION
+
+/* DMA stuff, needed for GPMI/MXS NAND support */
+#define CONFIG_APBH_DMA
+#define CONFIG_APBH_DMA_BURST
+#define CONFIG_APBH_DMA_BURST8
+
+
+#define CONFIG_CMD_FLASH
+#define CONFIG_CMD_ARMFLASH
+#define CONFIG_SYS_FLASH_CFI		1
+#define CONFIG_FLASH_CFI_DRIVER		1
+#define CONFIG_SYS_FLASH_BASE		0x04000000
+#define CONFIG_SYS_FLASH_SIZE		0x10000000 /* 256 MiB */
+#define CONFIG_SYS_MAX_FLASH_BANKS	1
+
+/* 255 0x40000 sectors + first or last sector may have 4 erase regions = 259 */
+#define CONFIG_SYS_MAX_FLASH_SECT	259		/* Max sectors */
+#define CONFIG_SYS_FLASH_USE_BUFFER_WRITE /* use buffered writes */
+#define CONFIG_SYS_FLASH_PROTECTION	/* The devices have real protection */
+#define CONFIG_SYS_FLASH_EMPTY_INFO	/* flinfo indicates empty blocks */
+
+#endif
 
 /* MMC Configuration */
 #define CONFIG_FSL_ESDHC
@@ -232,7 +269,7 @@
 			"bootz; " \
 		"fi;\0"
 
-#define CONFIG_BOOTCOMMAND \
+#define CONFIG_BOOTCOMMAND1 \
 	   "mmc dev ${mmcdev}; if mmc rescan; then " \
 		   "if run loadbootscript; then " \
 			   "run bootscript; " \
@@ -243,6 +280,10 @@
 			   "fi; " \
 		   "fi; " \
 	   "else run netboot; fi"
+
+#define CONFIG_BOOTCOMMAND \
+        "setenv bootargs 'root=/dev/ram rw panic=1 console=ttymxc0,115200 mtdparts=gpmi-nand:8M(U-Boot),128k(Env1),128k(Env2),8M(Linux),4M(Ramdisk),-(ubifs)'; " \
+        "bootz 0x10800000 12c00000 0x18000000;"
 
 /* Miscellaneous configurable options */
 #define CONFIG_SYS_LONGHELP
@@ -259,8 +300,7 @@
 /* Physical Memory Map */
 #define CONFIG_NR_DRAM_BANKS		1
 
-#define MMDC0_ARB_BASE_ADDR             0x10000000
-#define PHYS_SDRAM			MMDC0_ARB_BASE_ADDR
+#define PHYS_SDRAM			CONFIG_SYS_NAND_BASE
 
 #define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM
 #define CONFIG_SYS_INIT_RAM_ADDR	IRAM_BASE_ADDR
@@ -286,5 +326,6 @@
 #ifndef CONFIG_SYS_DCACHE_OFF
 #define CONFIG_CMD_CACHE
 #endif
+
 
 #endif			       /* __CONFIG_H * */

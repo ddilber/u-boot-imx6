@@ -4,7 +4,7 @@ config SYS_BOARD
         default "telegra"
 
 config SYS_SOC
-        default "mx6"
+	default "mx6"
 
 config SYS_CONFIG_NAME
         default "telegrauq7"
